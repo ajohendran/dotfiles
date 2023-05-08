@@ -34,7 +34,7 @@
 (menu-bar-mode -1)
 (setq-default left-margin-width 1) ; Define new widths.
 (set-window-buffer nil (current-buffer)) ; Use them now.
-(set-frame-font "PragmataPro Mono Liga 14" nil t)
+(set-frame-font "PragmataPro Liga 14" nil t)
 ;; (set-face-foreground 'font-lock-comment-face "#6A9955")
 
 
@@ -42,8 +42,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; general manual customizations
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(blink-cursor-mode 0)
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
+(windmove-default-keybindings)
 
 (defun eshell/clear ()
   "Clear the eshell buffer."
@@ -64,9 +66,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Key customizations
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "C-z") 'undo-only)
-(global-set-key (kbd "C-S-z") 'undo-redo)
-
 (defun scroll-other-window-up-line ()
   "Scroll the other window one line up."
   (interactive)
@@ -82,21 +81,22 @@
   (interactive)
   (scroll-other-window -20))
 
-(defun other-window-kill-buffer ()
-  "Kill the buffer in the other window"
-  (interactive)
-  ;; Window selection is used because point goes to a different window
-  ;; if more than 2 windows are present
-  (let ((win-curr (selected-window))
-        (win-other (next-window)))
-    (select-window win-other)
-    (kill-this-buffer)
-    (select-window win-curr)))
+(defun kill-and-close-other-window ()
+      "Kill the other buffer and delete the selected window."
+      (interactive)
+      (when (> (length (window-list)) 1)
+	  (other-window 1)
+	  (kill-this-buffer)
+	  (delete-window)))
 
 (global-set-key [C-M-S-up] 'scroll-other-window-up-line)
 (global-set-key [C-M-S-down] 'scroll-other-window-down-line)
 (global-set-key (kbd "C-M-z") 'scroll-other-window-up-page)
-(global-set-key (kbd "C-x M-k") 'other-window-kill-buffer)
+(global-set-key (kbd "C-x M-k") 'kill-and-close-other-window)
+
+(global-set-key (kbd "C-z") 'set-mark-command)
+(global-set-key (kbd "C-x C-z") 'pop-global-mark)
+(global-set-key (kbd "C-/") 'undo-only)
 
 
 
@@ -119,7 +119,7 @@
 
 (use-package avy
   :ensure t
-  :defer t)
+  :bind ("M-j" . avy-goto-char-timer))
 
 (use-package clojure-mode
   :ensure t
@@ -152,7 +152,7 @@
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ;; M-g bindings in `goto-map'
          ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-recent-file)               ;; Alternative: consult-flycheck
+         ("M-g f" . consult-recent-file)           
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
@@ -215,12 +215,12 @@
   ;; For some commands and buffer sources it is useful to configure the
   ;; :preview-key on a per-command basis using the `consult-customize' macro.
   (consult-customize
-   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-theme :preview-key '(:debounce 0.3 any)
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-file-register
    consult--source-recent-file consult--source-project-recent-file
-   ;; :preview-key "M-."
+   ;;:preview-key "M-."
    :preview-key '(:debounce 0.4 any))
 
   ;; Optionally configure the narrowing key.
@@ -268,7 +268,7 @@
 
 (use-package consult-project-extra
   :ensure t
-  :defer t)
+  :after consult)
 
 (use-package embark
   :ensure t
@@ -308,8 +308,8 @@
   )
 
 (use-package lambda-line
-  ;;:disabled nil
-  :load-path "~/code/lambda-line"
+  :disabled t
+  :load-path "~/code/emacs/lambda-line"
   :custom
   ;;(lambda-line-icon-time nil) ;; requires ClockFace font (see below)
   ;;(lambda-line-clockface-update-fontset "ClockFaceRect") ;; set clock icon
@@ -320,7 +320,7 @@
   (lambda-line-prefix-padding nil) ;; no extra space for prefix 
   (lambda-line-status-invert nil)  ;; no invert colors
   (lambda-line-tty-ro-symbol  " RO") ;; symbols
-  (lambda-line-tty-mod-symbol " MOD⬤") 
+  (lambda-line-tty-mod-symbol " MOD") 
   (lambda-line-tty-rw-symbol  " RW") 
   (lambda-line-space-top +.50)  ;; padding on top and bottom of line
   (lambda-line-space-bottom -.50)
@@ -334,13 +334,13 @@
     (setq mode-line-format (list "%_"))))
 
 (use-package lambda-themes
-  :load-path "~/code/lambda-themes"
+  :load-path "~/code/emacs/lambda-themes"
   :custom
   (lambda-themes-set-italic-comments nil)
   (lambda-themes-set-italic-keywords nil)
   (lambda-themes-set-variable-pitch nil) 
   :config
-  ;; load preferred theme 
+  ;; load preferred theme
   (load-theme 'lambda-light))
 
 (use-package magit
@@ -369,10 +369,10 @@
 		   partial-completion))))
   (orderless-component-separator 'orderless-escapable-split-on-space)
   (orderless-matching-styles
-   '(orderless-literal
-     orderless-prefixes
-     orderless-initialism
+   '(orderless-prefixes
+     orderless-literal     
      orderless-regexp
+     orderless-initialism
      ;; orderless-flex
      ;; orderless-strict-leading-initialism
      ;; orderless-strict-initialism
@@ -388,8 +388,7 @@
 	 ("M-s" . nil)
 	 ("M-S" . nil)
 	 ("M-s s" . paredit-splice-sexp)
-	 ("M-s S" . paredit-split-sexp)
-	 )
+	 ("M-s S" . paredit-split-sexp))
   :config (electric-indent-mode 0)
   :hook (clojure-mode emacs-lisp-mode ielm-mode 
 		       inf-clojure-mode inferior-lisp-mode lisp-mode))
@@ -408,8 +407,10 @@
   (recentf-mode))
 
 (use-package savehist 
-;; Persist history over Emacs restarts. Vertico sorts by history position.
-  :init (savehist-mode))
+;; Persist history over Emacs restarts. Vertico sorts by history position.  
+  :config 
+  (add-to-list 'savehist-additional-variables 'vertico-repeat-history)
+  (savehist-mode))
 
 (use-package vertico
   :init
@@ -417,7 +418,7 @@
   ;; Different scroll margin
   ;; (setq vertico-scroll-margin 0)
   ;; Show more candidates
-  ;;(setq vertico-count 20)
+  (setq vertico-count 13)
   ;; Grow and shrink the Vertico minibuffer
   ;; (setq vertico-resize t)
   ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
@@ -426,7 +427,9 @@
   ;; Vertico commands are hidden in normal buffers.
   (setq read-extended-command-predicate
         #'command-completion-default-include-p)
-  )
+  :bind (:map vertico-map
+	      ("C-M-n" .  #'vertico-next-group)
+	      ("C-M-p" .  #'vertico-previous-group)))
 
 (use-package vertico-directory
   :after vertico
@@ -438,6 +441,37 @@
               ("M-DEL" . vertico-directory-delete-word))
   ;; Tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+(use-package vertico-multiform
+  :after vertico
+  :ensure nil
+  :custom
+  (vertico-buffer-display-action '(display-buffer-reuse-window))  
+  (vertico-multiform-commands  '((consult-imenu buffer indexed)
+				 (consult-line buffer indexed)
+				 (consult-buffer buffer indexed)
+				 (consult-buffer-other-window buffer indexed)
+				 (consult-buffer-other-frame buffer indexed)
+				 (t indexed)))
+  (vertico-multiform-categories '((consult-grep buffer)
+				  (buffer buffer indexed)
+				  (command indexed)))
+  :config
+  (vertico-multiform-mode))
+
+(use-package vertico-quick
+  :after vertico
+  :ensure nil
+  :bind
+  (:map vertico-map
+	("C-q" . vertico-quick-insert)
+	("M-q" . vertico-quick-exit)))
+
+(use-package vertico-repeat
+  :after vertico
+  :ensure nil
+  :bind ("C-c r" . vertico-repeat)
+  :hook (minibuffer-setup . vertico-repeat-save))
 
 (use-package vscode-dark-plus-theme
   :defer t
