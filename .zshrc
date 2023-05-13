@@ -1,4 +1,5 @@
-PROMPT='%~ $ '
+NEWLINE=$'\n'
+PROMPT="${NEWLINE}%~ $ "
 eval "$(/usr/local/bin/brew shellenv)"
 alias l="ls"
 alias ll="ls -lhG"
