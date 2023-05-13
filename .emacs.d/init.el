@@ -32,10 +32,10 @@
 ;;;; appearance customizations
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (menu-bar-mode -1)
-(setq-default left-margin-width 0) ; Define new widths.
-(set-window-buffer nil (current-buffer)) ; Use them now.
-(set-frame-font "PragmataPro Liga 14" nil t)
-;; (set-face-foreground 'font-lock-comment-face "#6A9955")
+;;(setq-default left-margin-width 0) ; Define new widths.
+;;(set-window-buffer nil (current-buffer)) ; Use them now.
+(when (display-graphic-p)
+  (set-frame-font "PragmataPro Liga 14" nil t))
 
 
 
@@ -96,10 +96,10 @@
 (global-set-key (kbd "C-M-z") 'scroll-other-window-up-page)
 (global-set-key (kbd "C-x M-k") 'kill-and-close-other-window)
 
-(global-set-key (kbd "C-z") 'set-mark-command)
-(global-set-key (kbd "C-x C-z") 'pop-global-mark)
+;;(global-set-key (kbd "C-z") 'set-mark-command)
+;;(global-set-key (kbd "C-x C-z") 'pop-global-mark)
 (global-set-key (kbd "C-/") 'undo-only)
-
+(global-set-key (kbd "C-x t l") 'tab-list)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -170,6 +170,10 @@
   :bind ("M-j" . avy-goto-char-timer))
 
 (use-package clojure-mode
+  :ensure t
+  :defer t)
+
+(use-package company
   :ensure t
   :defer t)
 
@@ -355,32 +359,6 @@
   ;;:config (load-theme 'kaolin-valley-dark t)
   )
 
-(use-package lambda-line
-  :disabled t
-  :load-path "~/code/emacs/lambda-line"
-  :custom
-  ;;(lambda-line-icon-time nil) ;; requires ClockFace font (see below)
-  ;;(lambda-line-clockface-update-fontset "ClockFaceRect") ;; set clock icon
-  (lambda-line-position 'top) ;; Set position of status-line 
-  (lambda-line-abbrev t) ;; abbreviate major modes
-  (lambda-line-hspace "")  ;; add some cushion
-  (lambda-line-prefix t) ;; use a prefix symbol
-  (lambda-line-prefix-padding nil) ;; no extra space for prefix 
-  (lambda-line-status-invert nil)  ;; no invert colors
-  (lambda-line-tty-ro-symbol  " RO") ;; symbols
-  (lambda-line-tty-mod-symbol " MOD") 
-  (lambda-line-tty-rw-symbol  " RW") 
-  (lambda-line-space-top +.50)  ;; padding on top and bottom of line
-  (lambda-line-space-bottom -.50)
-  (lambda-line-symbol-position 0.1) ;; adjust the vertical placement of symbol
-  :config
-  ;; activate lambda-line 
-  (lambda-line-mode) 
-  ;; set divider line in footer
-  (when (eq lambda-line-position 'top)
-    (setq-default mode-line-format (list "%_"))
-    (setq mode-line-format (list "%_"))))
-
 (use-package lambda-themes
   :load-path "~/code/emacs/lambda-themes"
   :custom
@@ -389,7 +367,7 @@
   (lambda-themes-set-variable-pitch nil) 
   :config
   ;; load preferred theme
-  (load-theme 'lambda-dark))
+  (load-theme 'lambda-light))
 
 (use-package magit
   :ensure t
@@ -417,8 +395,8 @@
 		   partial-completion))))
   (orderless-component-separator 'orderless-escapable-split-on-space)
   (orderless-matching-styles
-   '(orderless-literal
-     orderless-prefixes     
+   '(orderless-prefixes     
+     orderless-literal
      orderless-regexp
      orderless-initialism
      ;; orderless-flex

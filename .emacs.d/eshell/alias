@@ -1,0 +1,4 @@
+alias rm rm -i $*
+alias lla ls -lha $*
+alias ll ls -lh $*
+alias cfgit git --git-dir=$HOME/.cfg/.git/ --work-tree=$HOME $*
