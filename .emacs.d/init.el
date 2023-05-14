@@ -360,7 +360,7 @@
   )
 
 (use-package lambda-themes
-  :load-path "~/code/emacs/lambda-themes"
+  :load-path "~/code/emacs/lambda-themes-mod"
   :custom
   (lambda-themes-set-italic-comments nil)
   (lambda-themes-set-italic-keywords nil)
