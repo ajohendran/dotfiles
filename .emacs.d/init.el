@@ -44,7 +44,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (blink-cursor-mode 0)
 (column-number-mode 1)
-(scroll-bar-mode 0)
+(when (display-graphic-p)
+  (scroll-bar-mode 0))
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
 (windmove-default-keybindings)
@@ -374,6 +375,7 @@
   :defer t)
 
 (use-package marginalia
+  :ensure t
   ;; Either bind `marginalia-cycle' globally or only in the minibuffer
   :bind ( ;;("M-A" . marginalia-cycle)
          :map minibuffer-local-map
@@ -439,6 +441,7 @@
   (savehist-mode))
 
 (use-package vertico
+  :ensure t
   :init
   (vertico-mode)
   ;; Different scroll margin
