@@ -382,6 +382,10 @@
          ("M-A" . marginalia-cycle))
   :init (marginalia-mode))
 
+(use-package modus-themes
+  :ensure t
+  :defer t)
+
 (use-package multiple-cursors
   :ensure t
   :defer t)
