@@ -48,7 +48,8 @@
   (scroll-bar-mode 0))
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
-(windmove-default-keybindings)
+(windmove-default-keybindings) ;; Use shift+arrow keys to shift windows
+(put 'dired-find-alternate-file 'disabled nil)
 
 (defun eshell/clear ()
   "Clear the eshell buffer."
@@ -97,9 +98,16 @@
 (global-set-key (kbd "C-M-z") 'scroll-other-window-up-page)
 (global-set-key (kbd "C-x M-k") 'kill-and-close-other-window)
 
-;;(global-set-key (kbd "C-z") 'set-mark-command)
-;;(global-set-key (kbd "C-x C-z") 'pop-global-mark)
+(defun other-frame-previous ()
+      "Select the previous frame, essentially calling other-frame with argument of -1"
+      (interactive)
+      (other-frame -1))
+(global-set-key (kbd "C-c <right>") 'other-frame)
+(global-set-key (kbd "C-c <left>") 'other-frame-previous)
+
 (global-set-key (kbd "C-/") 'undo-only)
+;; (global-set-key (kbd "C-\\") 'kill-whole-line)
+(global-set-key (kbd "C-x C-a") 'kill-whole-line)
 (global-set-key (kbd "C-x t l") 'tab-list)
 
 
@@ -168,7 +176,8 @@
 
 (use-package avy
   :ensure t
-  :bind ("M-j" . avy-goto-char-timer))
+  :bind ("M-j" . avy-goto-char-timer)
+  :custom (avy-timeout-seconds 1.0))
 
 (use-package clojure-mode
   :ensure t
@@ -326,8 +335,8 @@
 (use-package embark
   :ensure t
   :bind  
-  (("C-c ." . embark-act)         ;; pick some comfortable binding
-   ("C-c ," . embark-dwim)        ;; good alternative: M-.
+  (("C-z" . embark-act)         ;; pick some comfortable binding
+   ("C-c C-," . embark-dwim)        ;; good alternative: M-.
    ("C-c b" . embark-bindings)) ;; alternative for `describe-bindings'
   :init
   ;; Optionally replace the key help with a completing-read interface
@@ -336,6 +345,9 @@
   ;; strategy, if you want to see the documentation from multiple providers.
   ;;(add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
   ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+  :custom
+  ;;(embark-quit-after-action '((kill-buffer . t) (t . nil)))
+  (embark-quit-after-action nil)
   :config
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
@@ -509,7 +521,4 @@
 (use-package vscode-dark-plus-theme
   :defer t
   :ensure t)
-
-
-  
 
