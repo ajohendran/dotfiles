@@ -9,9 +9,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; packages archives
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
-;; and `package-pinned-packages`. Most users will not need or want to do this.
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . 
+				 "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (setq package-archive-priorities '(("melpa-stable"  . 30)
                                    ("gnu"    . 20)
@@ -67,6 +66,8 @@
 ;;(desktop-save-mode 1)
 (setq bookmark-save-flag 1)
 
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Key customizations
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -110,12 +111,30 @@
 (global-set-key (kbd "C-x C-a") 'kill-whole-line)
 (global-set-key (kbd "C-x t l") 'tab-list)
 
+(defun extended-command-other-window ()
+    "Call M-x in the other window."
+    (interactive)
+    (save-selected-window
+        (other-window 1)
+        (execute-extended-command nil)))
+
+(global-set-key (kbd "C-x 4 M-x") 'extended-command-other-window)
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; LISP Executables
+;;;;  Split window for REPL programming
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq inferior-lisp-program "ccl64")
-(setq scheme-program-name   "/usr/local/bin/mit-scheme")
+
+(defun split-window-repl-programming ()
+  "Split window vertically for REPL programming. 
+   Left half gets an extra 8% width."
+  (interactive)
+  (let* ((half-width (/ (window-total-width) 2))
+	 (new-width (+ half-width
+		       (* half-width 0.08))))
+    (print new-width)
+    (split-window-horizontally (round new-width))))
 
 
 
@@ -163,6 +182,12 @@
               split-width-threshold   160) ; the reasonable limit for horizontal splits
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LISP Executables
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq inferior-lisp-program "ccl")
+(setq scheme-program-name   "mit-scheme")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -409,7 +434,7 @@
   (completion-category-defaults nil)    ; I want to be in control!
   (completion-category-overrides
    '((file (styles orderless
-		   ;;basic-remote ; For `tramp' hostname completion with `vertico'
+		   ;;basic-remote ; `tramp' hostname completion with `vertico'
 		   partial-completion))))
   (orderless-component-separator 'orderless-escapable-split-on-space)
   (orderless-matching-styles
@@ -421,7 +446,7 @@
      ;; orderless-strict-leading-initialism
      ;; orderless-strict-initialism
      ;; orderless-strict-full-initialism
-     ;; orderless-without-literal          ; Recommended for dispatches instead
+     ;; orderless-without-literal        ; Recommended for dispatches instead
      )))
 
 (use-package paredit
@@ -431,11 +456,13 @@
          ("C-j" . paredit-newline)
 	 ("M-s" . nil)
 	 ("M-S" . nil)
+	 ("M-r" . move-to-window-line-top-bottom)
+	 ("M-s a" . paredit-raise-sexp)
 	 ("M-s s" . paredit-splice-sexp)
 	 ("M-s S" . paredit-split-sexp))
   :config (electric-indent-mode 0)
-  :hook (clojure-mode emacs-lisp-mode ielm-mode 
-		       inf-clojure-mode inferior-lisp-mode lisp-mode))
+  :hook (clojure-mode scheme-mode inferior-scheme-mode emacs-lisp-mode ielm-mode 
+		      inf-clojure-mode inferior-lisp-mode lisp-mode))
 
 (use-package rainbow-mode
   :ensure t)

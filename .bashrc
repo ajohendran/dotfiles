@@ -36,6 +36,7 @@ alias lla='ls -lha'
 alias cfgit='/usr/bin/git --git-dir=$HOME/.cfg/.git --work-tree=$HOME'
 alias rm='rm -i'
 alias mv='mv -i'
+alias ecd='emacsclient -t -s dev'
 
 export CPPFLAGS='-I/usr/local/opt/openjdk/include'
 
