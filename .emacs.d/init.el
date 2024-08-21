@@ -68,6 +68,7 @@
 
 
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Key customizations
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -120,20 +121,24 @@
 
 (global-set-key (kbd "C-x 4 M-x") 'extended-command-other-window)
 
-
+(global-set-key (kbd "M-s <left>") 'windmove-swap-states-left)
+(global-set-key (kbd "M-s <right>") 'windmove-swap-states-right)
+(global-set-key (kbd "M-s <up>") 'windmove-swap-states-up)
+(global-set-key (kbd "M-s <down>") 'windmove-swap-states-down)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;  Split window for REPL programming
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun split-window-repl-programming ()
-  "Split window vertically for REPL programming. 
+  "Split window vertically for REPL programming in a new frame. 
    Left half gets an extra 8% width."
   (interactive)
   (let* ((half-width (/ (window-total-width) 2))
 	 (new-width (+ half-width
 		       (* half-width 0.08))))
     (print new-width)
+    ;;(make-frame '((name . "REPL-Frame")))
     (split-window-horizontally (round new-width))))
 
 
@@ -399,13 +404,15 @@
 
 (use-package lambda-themes
   :load-path "~/code/emacs/lambda-themes-mod"
+  :defer t
   :custom
   (lambda-themes-set-italic-comments nil)
   (lambda-themes-set-italic-keywords nil)
   (lambda-themes-set-variable-pitch nil) 
   :config
   ;; load preferred theme
-  (load-theme 'lambda-light))
+  ;; (load-theme 'lambda-light)
+  )
 
 (use-package magit
   :ensure t
@@ -421,7 +428,9 @@
 
 (use-package modus-themes
   :ensure t
-  :defer t)
+  :defer nil
+  :config
+  (load-theme 'modus-operandi-tritanopia))
 
 (use-package multiple-cursors
   :ensure t
@@ -456,16 +465,17 @@
          ("C-j" . paredit-newline)
 	 ("M-s" . nil)
 	 ("M-S" . nil)
+	 ("C-<left>" . nil)
+	 ("C-<right>" . nil)
 	 ("M-r" . move-to-window-line-top-bottom)
 	 ("M-s a" . paredit-raise-sexp)
 	 ("M-s s" . paredit-splice-sexp)
 	 ("M-s S" . paredit-split-sexp))
   :config (electric-indent-mode 0)
-  :hook (clojure-mode scheme-mode inferior-scheme-mode emacs-lisp-mode ielm-mode 
+  :hook (clojure-mode scheme-mode inferior-scheme-mode 
+		      emacs-lisp-mode ielm-mode sly-mrepl-mode
 		      inf-clojure-mode inferior-lisp-mode lisp-mode))
 
-(use-package rainbow-mode
-  :ensure t)
 
 (use-package recentf
   :ensure nil
@@ -476,6 +486,14 @@
   (recentf-max-saved-items 25)
   :config 
   (recentf-mode))
+
+(use-package sly
+  :ensure t
+  :pin melpa 
+  :init
+  (setq sly-net-coding-system            'utf-8-unix
+        sly-lisp-implementations         '((ccl ("~/bin/ccl"))
+                                           (sbcl  ("/usr/local/bin/sbcl")))))
 
 (use-package savehist 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.  
