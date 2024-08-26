@@ -467,6 +467,8 @@
 	 ("M-S" . nil)
 	 ("C-<left>" . nil)
 	 ("C-<right>" . nil)
+	 ("{" . paredit-open-curly)
+	 ("M-]" . paredit-forward-slurp-sexp)
 	 ("M-r" . move-to-window-line-top-bottom)
 	 ("M-s a" . paredit-raise-sexp)
 	 ("M-s s" . paredit-splice-sexp)
@@ -493,7 +495,9 @@
   :init
   (setq sly-net-coding-system            'utf-8-unix
         sly-lisp-implementations         '((ccl ("~/bin/ccl"))
-                                           (sbcl  ("/usr/local/bin/sbcl")))))
+                                           (sbcl  ("/usr/local/bin/sbcl"))))
+  :bind (:map sly-mode-map
+	      ("C-c p" . sly-eval-print-last-expression)))
 
 (use-package savehist 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.  
