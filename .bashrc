@@ -41,3 +41,6 @@ alias ecd='emacsclient -t -s dev'
 
 export CPPFLAGS='-I/usr/local/opt/openjdk/include'
 
+## Java build stuff
+export PATH=$PATH:/usr/local/src/apache-maven-3.9.9/bin:/usr/local/etc/gradle-8.10/bin
+

@@ -211,7 +211,8 @@
 
 (use-package clojure-mode
   :ensure t
-  :defer t)
+  :defer t
+  :hook (clojure-mode . (lambda () (eldoc-mode -1))))
 
 (use-package company
   :ensure t
@@ -362,6 +363,17 @@
   :ensure t
   :after consult)
 
+(use-package eglot-java
+  :ensure t
+  :defer t
+  :bind (("C-c l n" . eglot-java-file-new)
+	 ("C-c l x" . eglot-java-run-main)
+	 ("C-c l t" . eglot-java-run-test)
+	 ("C-c l N" . eglot-java-project-new)
+	 ("C-c l T" . eglot-java-project-build-task)
+	 ("C-c l R" . eglot-java-project-build-refresh))
+  :hook (java-mode java-ts-mode))
+
 (use-package embark
   :ensure t
   :bind  
@@ -391,6 +403,9 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+;; (use-package envrc
+;;   :hook (after-init . envrc-global-mode))
+
 (use-package inf-clojure
      :ensure t
      :defer t
@@ -404,7 +419,7 @@
 
 (use-package lambda-themes
   :load-path "~/code/emacs/lambda-themes-mod"
-  :defer t
+  ;; :defer t
   :custom
   (lambda-themes-set-italic-comments nil)
   (lambda-themes-set-italic-keywords nil)
@@ -463,10 +478,13 @@
   :bind (:map paredit-mode-map
 	 ("RET" . nil)
          ("C-j" . paredit-newline)
+	 ("C-w" . paredit-kill-region)
+	 ("C-\\" . backward-kill-sexp) 
 	 ("M-s" . nil)
 	 ("M-S" . nil)
 	 ("C-<left>" . nil)
 	 ("C-<right>" . nil)
+	 ("C-M-y" . paredit-copy-as-kill)
 	 ("{" . paredit-open-curly)
 	 ("M-]" . paredit-forward-slurp-sexp)
 	 ("M-r" . move-to-window-line-top-bottom)
