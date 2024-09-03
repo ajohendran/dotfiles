@@ -2,7 +2,8 @@
            {:exec-fn clojure.core.server/start-server
             :exec-args {:name "repl-server"
                         :port 5555
-                        :accept clojure.core.server/repl
-                        :server-daemon false}}}
+                        :accept odisi.server/repl
+                        :server-daemon false}
+            :extra-deps {odisi/clojure-utils {:local/root "/home/ec2-user/code/clojure/clojure-utils"}}}}
  :mvn/repos {"cognitect-dev-tools"
              {:url "https://dev-tools.cognitect.com/maven/releases/"}}}
