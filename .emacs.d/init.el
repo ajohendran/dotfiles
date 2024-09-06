@@ -363,22 +363,22 @@
   :ensure t
   :after consult)
 
-(use-package eglot-java
-  :ensure t
-  :defer t
-  :bind (("C-c l n" . eglot-java-file-new)
-	 ("C-c l x" . eglot-java-run-main)
-	 ("C-c l t" . eglot-java-run-test)
-	 ("C-c l N" . eglot-java-project-new)
-	 ("C-c l T" . eglot-java-project-build-task)
-	 ("C-c l R" . eglot-java-project-build-refresh))
-  :hook (java-mode java-ts-mode))
+;; (use-package eglot-java
+;;   :ensure t
+;;   :defer t
+;;   :bind (("C-c l n" . eglot-java-file-new)
+;; 	 ("C-c l x" . eglot-java-run-main)
+;; 	 ("C-c l t" . eglot-java-run-test)
+;; 	 ("C-c l N" . eglot-java-project-new)
+;; 	 ("C-c l T" . eglot-java-project-build-task)
+;; 	 ("C-c l R" . eglot-java-project-build-refresh))
+;;   :hook (java-mode java-ts-mode))
 
 (use-package embark
   :ensure t
   :bind  
   (("C-z" . embark-act)         ;; pick some comfortable binding
-   ("C-c C-," . embark-dwim)        ;; good alternative: M-.
+   ("C-c ," . embark-dwim)        ;; good alternative: M-.
    ("C-c b" . embark-bindings)) ;; alternative for `describe-bindings'
   :init
   ;; Optionally replace the key help with a completing-read interface
