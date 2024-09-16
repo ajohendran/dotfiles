@@ -183,8 +183,8 @@
                                               'left
                                             'right))))))))
 
-(setq-default split-height-threshold  80
-              split-width-threshold   160) ; the reasonable limit for horizontal splits
+(setq-default split-height-threshold  40
+              split-width-threshold   140) ; the reasonable limit for horizontal splits
 
 
 
@@ -411,6 +411,12 @@
      :defer t
      :hook (inf-clojure-mode . (lambda () (eldoc-mode -1))))
 
+(use-package highlight-parentheses
+  :ensure t
+  ;; :hook 
+  ;; (prod-mode . highlight-parenthesis)
+)
+
 (use-package kaolin-themes
   :ensure t
   :defer t
@@ -421,7 +427,7 @@
   :load-path "~/code/emacs/lambda-themes-mod"
   ;; :defer t
   :custom
-  (lambda-themes-set-italic-comments nil)
+  (lambda-themes-set-italic-comments t)
   (lambda-themes-set-italic-keywords nil)
   (lambda-themes-set-variable-pitch nil) 
   :config
