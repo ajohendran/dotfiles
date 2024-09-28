@@ -30,23 +30,24 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; appearance customizations
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(menu-bar-mode -1)
-;;(setq-default left-margin-width 0) ; Define new widths.
+
+;; (setq-default left-margin-width 0) ; Define new widths.
 ;;(set-window-buffer nil (current-buffer)) ; Use them now.
-(when (display-graphic-p)
-  (set-frame-font "PragmataPro Mono 15" nil t))
+;; (when (display-graphic-p)
+;;   (set-frame-font "PragmataPro Mono 15" nil t)
+;;   (scroll-bar-mode 0))
+
+(blink-cursor-mode 0)
+(column-number-mode 1)
+(setq inhibit-startup-screen t)
+(setq ring-bell-function 'ignore)
+(add-to-list 'default-frame-alist '(font . "PragmataPro Mono 15"))
 
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; general manual customizations
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(blink-cursor-mode 0)
-(column-number-mode 1)
-(when (display-graphic-p)
-  (scroll-bar-mode 0))
-(setq inhibit-startup-screen t)
-(setq ring-bell-function 'ignore)
 (windmove-default-keybindings) ;; Use shift+arrow keys to shift windows
 (put 'dired-find-alternate-file 'disabled nil)
 
@@ -62,7 +63,7 @@
 ;;             (cd "~/")
 ;;             (eshell)))
 
-(setq desktop-path '("~/.emacs.d/"))
+ (setq desktop-path '("~/.emacs.d/"))
 ;;(desktop-save-mode 1)
 (setq bookmark-save-flag 1)
 
