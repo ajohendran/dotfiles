@@ -4,6 +4,6 @@
                         :port 5555
                         :accept odisi.server/repl
                         :server-daemon false}
-            :extra-deps {odisi/clojure-utils {:local/root "/home/ec2-user/code/clojure/clojure-utils"}}}}
+            :extra-deps {odisi/clojure-utils {:local/root "../clojure-utils"}}}}
  :mvn/repos {"cognitect-dev-tools"
              {:url "https://dev-tools.cognitect.com/maven/releases/"}}}

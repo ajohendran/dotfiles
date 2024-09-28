@@ -34,7 +34,7 @@
 ;;(setq-default left-margin-width 0) ; Define new widths.
 ;;(set-window-buffer nil (current-buffer)) ; Use them now.
 (when (display-graphic-p)
-  (set-frame-font "PragmataPro Liga 14" nil t))
+  (set-frame-font "PragmataPro Mono 15" nil t))
 
 
 
@@ -374,6 +374,18 @@
 ;; 	 ("C-c l R" . eglot-java-project-build-refresh))
 ;;   :hook (java-mode java-ts-mode))
 
+(use-package dylan
+  :ensure t)
+
+(use-package dime
+  :ensure t
+  :init
+  (dime-setup '(dime-repl dime-note-tree))
+  :config
+  (setq dime-dylan-implementations
+      '((opendylan ("/usr/local/bin/dswank")
+                   :env ("OPEN_DYLAN_USER_REGISTRIES=/usr/local/opt/opendylan/sources/registry:~/code/dylan")))))
+
 (use-package embark
   :ensure t
   :bind  
@@ -432,8 +444,7 @@
   (lambda-themes-set-variable-pitch nil) 
   :config
   ;; load preferred theme
-  ;; (load-theme 'lambda-light)
-  )
+  (load-theme 'lambda-light))
 
 (use-package magit
   :ensure t
@@ -451,7 +462,8 @@
   :ensure t
   :defer nil
   :config
-  (load-theme 'modus-operandi-tritanopia))
+  ;(load-theme 'modus-operandi-tritanopia)
+  )
 
 (use-package multiple-cursors
   :ensure t
