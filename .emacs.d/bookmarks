@@ -1,0 +1,29 @@
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("inf-clojure-reload"
+ (filename . "~/.emacs.d/elpa/inf-clojure-3.2.1/inf-clojure.el")
+ (front-context-string . "(defun inf-cloju")
+ (rear-context-string . "-to-repl t))))\n\n")
+ (position . 42354)
+ (last-modified 26320 63468 346152 847000))
+("init.el"
+ (filename . "~/.emacs.d/init.el")
+ (front-context-string . ";;;;;;;;;;;;;;;;")
+ (rear-context-string . "ave-flag 1)\n\n\n\n\n")
+ (position . 2105)
+ (last-modified 26305 6123 62448 14000))
+("lambda-themes"
+ (filename . "~/code/emacs/lambda-themes-mod/lambda-themes.el")
+ (front-context-string . "        (lambda-")
+ (rear-context-string . "       ;; basic\n")
+ (position . 6177)
+ (last-modified 26280 6713 605292 787000))
+("sicp-latest"
+ (filename . "~/code/lisp/sicp/src/sicp/ch2/s5.clj")
+ (front-context-string)
+ (rear-context-string . " to the tower.\n\n")
+ (position . 40485)
+ (last-modified 26303 45575 272757 39000))
+)
